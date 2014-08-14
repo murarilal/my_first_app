@@ -1,0 +1,25 @@
+<table class="pretty">
+  <thead class = "current">
+    <tr>
+        <th><%= sortable "id" %></th>  
+        <th><%= sortable "title" %></th>  
+        <th><%= sortable "text" %></th>
+        <th><%= sortable "user_id" %></th>
+        <th><%= sortable "image" %></th>
+        <th><%= sortable "created_at", "Created_at" %></th> 
+    </tr>
+  </thead>
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td><%= link_to article.id, article_path(article) %></td>
+        <td><%= article.title %></td>
+        <td><%= article.text %></td>
+        <td><%= article.user_id %></td>
+        <td><%= image_tag article.image_url(:thumb) rescue 0 %></td>
+        <td><%= article.created_at %></td>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @articles %>

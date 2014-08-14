@@ -1,0 +1,55 @@
+<%- model_class = Article -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:tag_name) %>:</strong></dt>
+  <dd><%= @article.tag_list %></dd><br>
+  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
+  <dd><%= @article.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:text) %>:</strong></dt>
+  <dd><%= @article.text %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
+  <dd><%= @article.user_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:image) %>:</strong></dt>
+  <dd><%= image_tag @article.image_url(:thumb) rescue 0 %></dd>
+</dl>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              articles_path, :class => 'btn'  %>   
+<% if can? :update, @article %>                       
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_article_path(@article), :class => 'btn' %>
+<% end %>
+<% if can? :remove, @article %>
+  <%= link_to 'Remove', remove_articles_path(@article),
+            :confirm => 'Are you sure?', :method => :delete %>          
+<% end %>              
+</div>
+<h3>Comments (<%= @article.comments.size %>)</h3>
+<% @article.comments.each do |comment| %>
+  <p>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+  </p>
+ 
+  <p>
+    <strong>Comment:</strong>
+    <%= comment.body %>
+  </p>
+<% if can? :update, comment %>  
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_article_comment_path(@article, comment), :class => 'btn' %>
+<% end %>
+
+<% if can? :remove, comment %>              
+  <%= link_to "Destroy", remove_article_comments_path(@article, comment), :method => :delete, :confirm => "Are you sure?" %> 
+
+<% end %>              
+  
+<% end %>
+<h2>Add a comment:</h2>
+<%= render 'comments/form'%>
+

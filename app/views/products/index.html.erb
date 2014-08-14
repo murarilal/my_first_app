@@ -1,0 +1,10 @@
+<h1>Products</h1>
+<%= render 'products/search' %>
+<table>
+	<th>Product_name</th>
+	<% @products.each do |product| %>
+	  <tr>
+	   <td><%= link_to "#{product.name}", product_path(product) %> </td>
+	  </tr>
+	<% end %>  
+</table>
